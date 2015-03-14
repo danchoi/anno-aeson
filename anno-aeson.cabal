@@ -22,6 +22,7 @@ library
   -- other-extensions:    
   build-depends:       base >=4.6 && <4.8
                      , aeson >= 0.8
+                     , scientific
                      , text
                      , unordered-containers
                      , vector
@@ -37,6 +38,7 @@ executable test
   build-depends:       base >=4.6 && <4.8 
                      , anno-aeson
                      , aeson >= 0.8
+                     , scientific
                      , text
                      , unordered-containers
                      , vector

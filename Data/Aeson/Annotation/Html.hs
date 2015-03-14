@@ -10,12 +10,15 @@ import Data.Monoid
 import Data.Text (Text)
 import Data.List
 import qualified Data.HashMap.Strict as H (toList)
+import Data.Scientific
 
 instance ToMarkup Value where
   toMarkup (Object v) = fromCompound ("{", "}") fromPair (H.toList v)
   toMarkup (Array v) = fromCompound ("[", "]") toMarkup (V.toList v)
   toMarkup (String v) = wrapspan "string" (show v)
-  toMarkup (Number v) = wrapspan "number" $ show v
+  toMarkup (Number v) = wrapspan "number" 
+        $ either show show
+            (floatingOrInteger v)
   toMarkup (Bool v) = wrapspan "bool" $ show  v
   toMarkup Null = wrapspan "null" ("null" :: Text)
 
