@@ -26,6 +26,8 @@ library
                      , unordered-containers
                      , vector
                      , bytestring
+                     , blaze-html
+                     , blaze-markup
 
   -- hs-source-dirs:      
   default-language:    Haskell2010
@@ -39,4 +41,6 @@ executable test
                      , unordered-containers
                      , vector
                      , bytestring
+                     , blaze-html
+                     , blaze-markup
   default-language:    Haskell2010
