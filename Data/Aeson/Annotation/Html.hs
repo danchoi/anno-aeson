@@ -43,8 +43,14 @@ fromCompound (delimL,delimR) fromItem items = do
       items' = mconcat . intersperse ("," <> H.br) $
                   map (\item -> fromItem item) items
 
-
 fromPair :: (Text, Value) -> Html
+fromPair (k@"href", String v) = (toMarkup k) <> ": " <> (linkHref v)
 fromPair (k,v) = (toMarkup k) <> ": " <> (toMarkup v)
+
+linkHref :: Text -> Html
+linkHref v = 
+    H.a ! A.href (toValue v) $ toHtml v
+
+
 
 
