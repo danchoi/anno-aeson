@@ -17,11 +17,12 @@ import Network.URI
 instance ToMarkup Value where
   toMarkup (Object v) = fromCompound ("{", "}") fromPair (H.toList v)
   toMarkup (Array v) = fromCompound ("[", "]") toMarkup (V.toList v)
-  toMarkup (String v) = handleString (T.unpack v)
+  toMarkup (String v) = handleString v
   toMarkup (Number v) = wrapspan "number" 
         $ either show show
             (floatingOrInteger v)
-  toMarkup (Bool v) = wrapspan "bool" $ show  v
+  toMarkup (Bool True) = wrapspan "bool" $ "true"
+  toMarkup (Bool False) = wrapspan "bool" $ "false"
   toMarkup Null = wrapspan "null" ("null" :: Text)
 
 wrapspan :: ToMarkup a => Text -> a -> Html
@@ -29,10 +30,9 @@ wrapspan jsonType x = H.span
     ! A.class_ (toValue $ "json-val json-val-" <> jsonType)
     $ toMarkup x
 
-handleString :: String -> Html
-handleString v | isURI v = H.a 
-      ! A.class_ "json-val json-val-string" 
-      ! A.href (toValue v) $ toHtml . show $  v
+handleString :: Text -> Html
+handleString v | isURI (T.unpack v) = linkHref v
+    
 handleString v = wrapspan "string" (show v)
 
 indented = A.style "margin-left: 1.0em"
@@ -60,7 +60,9 @@ fromPair (k,v) = (toMarkup k) <> ": " <> (toMarkup v)
 
 linkHref :: Text -> Html
 linkHref v = 
-    H.a ! A.href (toValue v) $ toHtml v
+   let a = H.a ! A.class_ "json-val json-val-string" 
+               ! A.href (toValue v) $ toHtml v
+   in "\"" <> a <> "\""
 
 
 
