@@ -21,8 +21,8 @@ instance ToMarkup Value where
   toMarkup (Number v) = wrapspan "number" 
         $ either show show
             (floatingOrInteger v)
-  toMarkup (Bool True) = wrapspan "bool" $ "true"
-  toMarkup (Bool False) = wrapspan "bool" $ "false"
+  toMarkup (Bool True) = wrapspan "bool" ("true" :: Text)
+  toMarkup (Bool False) = wrapspan "bool" ("false" :: Text)
   toMarkup Null = wrapspan "null" ("null" :: Text)
 
 wrapspan :: ToMarkup a => Text -> a -> Html
